@@ -37,7 +37,7 @@ export const addInfo = async (uid: string, client: CommonInfoSchema) => {
 			'',
 			clientAge,
 			fullname.toUpperCase(),
-			formatInTimeZone(new Date(dob), 'Asia/Ho_Chi_Minh', 'dd/LL/yyyy'),
+			formatInTimeZone(new Date(dob), 'Asia/Ho_Chi_Minh', 'LL/dd/yyyy'),
 			...Object.values(restClient)
 		]
 	})

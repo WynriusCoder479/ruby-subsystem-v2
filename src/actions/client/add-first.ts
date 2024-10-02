@@ -22,7 +22,7 @@ export const createClient = async (uid: string, publisherCode: string) => {
 					formatInTimeZone(
 						new Date(timestamp),
 						'Asia/Ho_Chi_Minh',
-						'QQQ E dd/LL/yyyy - HH:mm:ss'
+						'QQQ E LL/dd/yyyy - HH:mm:ss'
 					),
 					publisherCode
 				]
