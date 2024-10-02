@@ -3,7 +3,7 @@ import { CardType } from '@/features/credit-card/products/types/card.type'
 export const hdb = (code: string) =>
 	[
 		{
-			id: 'hdbvietjet',
+			id: 'hdbvjp',
 			name: 'HD Bank - Vietjet',
 			group: 'hdb',
 			link: `https://hdbank.page.link/?link=https://hdbank.page.link/?channel=dop&productcode=DOPPLX&utm_source=FIMI&utm_campaign=test&utm_channel=DOP&utm_ref=${code}&apn=com.vnpay.hdbank&isi=1461658565&ibi=com.vnpay.HDBank`,

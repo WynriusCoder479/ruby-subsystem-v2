@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 
+import { addChooseTimestamp } from '@/actions/client/add-choose'
 import { getProducts } from '@/actions/client/suggest-product'
 import Footer from '@/components/common/footer'
 import { Button } from '@/components/ui/button'
@@ -28,6 +28,22 @@ const ProductsPage: FC<ProductsPageProps> = ({ searchParams: { uid } }) => {
 	const { data: products } = useQuery({
 		queryKey: ['products', uid],
 		queryFn: async () => await getProducts(uid)
+	})
+
+	const { mutate: addTimestamp, isPending } = useMutation({
+		mutationFn: async ({
+			productCode,
+			link
+		}: {
+			productCode: string
+			link: string
+		}) => {
+			await addChooseTimestamp(uid, productCode)
+			return { link }
+		},
+		onSuccess: ({ link }) => {
+			router.push(link)
+		}
 	})
 
 	return (
@@ -73,9 +89,16 @@ const ProductsPage: FC<ProductsPageProps> = ({ searchParams: { uid } }) => {
 								</div>
 								<Button
 									className="w-full"
-									asChild
+									disabled={isPending}
+									onClick={() => {
+										addTimestamp({
+											link: product.link,
+											productCode:
+												product.group === 'vp' ? 'vpbankcc' : product.id
+										})
+									}}
 								>
-									<Link href={product.link}>Mở thẻ ngay</Link>
+									Mở thẻ ngay
 								</Button>
 							</div>
 						</div>

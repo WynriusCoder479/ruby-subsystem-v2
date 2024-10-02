@@ -4,16 +4,10 @@ import { vi } from 'date-fns/locale'
 import { formatInTimeZone } from 'date-fns-tz'
 import { redirect } from 'next/navigation'
 
-import { CommonInfoSchema } from '@/features/credit-card/common-info/schemas/common-info.schema'
 import { getSheets } from '@/lib/google-sheets'
-import { calculateAge } from '@/lib/utils'
 
-export const addInfo = async (uid: string, client: CommonInfoSchema) => {
+export const addChooseTimestamp = async (uid: string, productCode: string) => {
 	const sheets = await getSheets()
-
-	const clientAge = calculateAge(client.dob as string)
-
-	if (clientAge < 18) return redirect('/credit-card/non-qualified')
 
 	const {
 		data: { values }
@@ -26,22 +20,26 @@ export const addInfo = async (uid: string, client: CommonInfoSchema) => {
 		throw Error('Internal server error')
 	}
 
+	const timestamp = Date.now()
+
 	const data = [...values].map(value => {
 		if (value[0] !== uid) return value
 
-		const rest = value.splice(0, 4)
-
-		const { fullname, dob, ...restClient } = client
+		const rest = [...value].splice(0, 3)
+		const info = [...value].splice(4, 8)
 
 		return [
 			...rest,
-			'',
-			clientAge,
-			fullname.toUpperCase(),
-			formatInTimeZone(new Date(dob), 'Asia/Ho_Chi_Minh', 'dd/LL/yyyy', {
-				locale: vi
-			}),
-			...Object.values(restClient)
+			productCode,
+			...info,
+			formatInTimeZone(
+				new Date(timestamp),
+				'Asia/Ho_Chi_Minh',
+				'QQQ E dd/LL/yyyy - hh:mm:ss bbb',
+				{
+					locale: vi
+				}
+			)
 		]
 	})
 
@@ -54,5 +52,5 @@ export const addInfo = async (uid: string, client: CommonInfoSchema) => {
 		}
 	})
 
-	redirect(`/credit-card/income-and-demand?uid=${uid}`)
+	redirect(`/credit-card/products?uid=${uid}`)
 }

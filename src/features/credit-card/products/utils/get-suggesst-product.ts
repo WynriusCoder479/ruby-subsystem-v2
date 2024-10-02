@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { products } from '@/features/credit-card/products/constants/products.constant'
-import { Client } from '@/stores/client.store'
 
 export const getSuggestProducts = (
 	uid: string,
-	client: Pick<Client, 'income' | 'city' | 'demands'>
+	client: {
+		income: string
+		demands: string[]
+		city: string
+	}
 ) => {
 	const income = parseInt(client.income.split('.').join(''))
 
