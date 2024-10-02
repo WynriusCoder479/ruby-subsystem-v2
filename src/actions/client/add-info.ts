@@ -1,6 +1,5 @@
 'use server'
 
-import { vi } from 'date-fns/locale'
 import { formatInTimeZone } from 'date-fns-tz'
 import { redirect } from 'next/navigation'
 
@@ -38,9 +37,7 @@ export const addInfo = async (uid: string, client: CommonInfoSchema) => {
 			'',
 			clientAge,
 			fullname.toUpperCase(),
-			formatInTimeZone(new Date(dob), 'Asia/Ho_Chi_Minh', 'dd/LL/yyyy', {
-				locale: vi
-			}),
+			formatInTimeZone(new Date(dob), 'Asia/Ho_Chi_Minh', 'dd/LL/yyyy'),
 			...Object.values(restClient)
 		]
 	})

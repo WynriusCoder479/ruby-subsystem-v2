@@ -34,7 +34,7 @@ export const addChooseTimestamp = async (uid: string, productCode: string) => {
 			formatInTimeZone(
 				new Date(timestamp),
 				'Asia/Ho_Chi_Minh',
-				'QQQ E dd/LL/yyyy - hh:mm:ss bbb'
+				'QQQ E dd/LL/yyyy - HH:mm:ss'
 			)
 		]
 	})
